@@ -1,10 +1,10 @@
 import type React from 'react';
-import type { BottomSheetProps } from '../bottomSheet';
-import type { MODAL_STACK_BEHAVIOR } from '../../constants';
 import type {
   WithSpringConfig,
   WithTimingConfig,
 } from 'react-native-reanimated';
+import type { BottomSheetProps } from '../bottomSheet';
+import type { MODAL_STACK_BEHAVIOR } from '../../constants';
 
 export interface BottomSheetModalPrivateMethods {
   dismiss: (animationConfigs?: WithSpringConfig | WithTimingConfig) => void;
