@@ -16,7 +16,10 @@ import {
   DEFAULT_ENABLE_DISMISS_ON_CLOSE,
 } from './constants';
 import type { BottomSheetModalMethods, BottomSheetMethods } from '../../types';
-import type { BottomSheetModalProps } from './types';
+import type {
+  BottomSheetModalPrivateMethods,
+  BottomSheetModalProps,
+} from './types';
 import { id } from '../../utilities/id';
 
 type BottomSheetModal = BottomSheetModalMethods;
@@ -72,6 +75,8 @@ const BottomSheetModalComponent = forwardRef<
 
   //#region refs
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const bottomSheetModalPrivateMethodsRef =
+    useRef<BottomSheetModalPrivateMethods | null>(null);
   const currentIndexRef = useRef(!animateOnMount ? index : -1);
   const restoreIndexRef = useRef(-1);
   const minimized = useRef(false);
@@ -183,7 +188,7 @@ const BottomSheetModalComponent = forwardRef<
           mount: true,
           data: _data,
         });
-        mountSheet(key, ref, stackBehavior);
+        mountSheet(key, bottomSheetModalPrivateMethodsRef, stackBehavior);
 
         print({
           component: BottomSheetModal.name,
@@ -191,7 +196,6 @@ const BottomSheetModalComponent = forwardRef<
         });
       });
     },
-    // eslint-disable-next-line react-hooks/exhaustive-deps
     [key, stackBehavior, mountSheet]
   );
   const handleDismiss = useCallback<BottomSheetModalMethods['dismiss']>(
@@ -349,21 +353,31 @@ const BottomSheetModalComponent = forwardRef<
   //#endregion
 
   //#region expose methods
-  useImperativeHandle(ref, () => ({
-    // sheet
-    snapToIndex: handleSnapToIndex,
-    snapToPosition: handleSnapToPosition,
-    expand: handleExpand,
-    collapse: handleCollapse,
-    close: handleClose,
-    forceClose: handleForceClose,
-    // modal methods
-    dismiss: handleDismiss,
-    present: handlePresent,
-    // internal
-    minimize: handleMinimize,
-    restore: handleRestore,
-  }));
+  useImperativeHandle(ref, () => {
+    //#region expose privates methods
+    bottomSheetModalPrivateMethodsRef.current = {
+      dismiss: handleDismiss,
+      minimize: handleMinimize,
+      restore: handleRestore,
+    };
+    //#endregion
+
+    return {
+      // sheet
+      snapToIndex: handleSnapToIndex,
+      snapToPosition: handleSnapToPosition,
+      expand: handleExpand,
+      collapse: handleCollapse,
+      close: handleClose,
+      forceClose: handleForceClose,
+      // modal methods
+      dismiss: handleDismiss,
+      present: handlePresent,
+      // internal
+      minimize: handleMinimize,
+      restore: handleRestore,
+    };
+  });
   //#endregion
 
   // render
