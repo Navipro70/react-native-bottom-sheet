@@ -1,15 +1,15 @@
-import { createContext, Ref } from 'react';
+import { createContext } from 'react';
 import type { Insets } from 'react-native';
 import type Animated from 'react-native-reanimated';
-import type BottomSheet from '../../components/bottomSheet';
 import type { BottomSheetModalStackBehavior } from '../../components/bottomSheetModal';
+import type { BottomSheetModalRef } from '../../components/bottomSheetModalProvider/types';
 
 export interface BottomSheetModalInternalContextType {
   containerHeight: Animated.SharedValue<number>;
   containerOffset: Animated.SharedValue<Required<Insets>>;
   mountSheet: (
     key: string,
-    ref: Ref<BottomSheet>,
+    ref: BottomSheetModalRef['ref'],
     stackBehavior: BottomSheetModalStackBehavior
   ) => void;
   unmountSheet: (key: string) => void;

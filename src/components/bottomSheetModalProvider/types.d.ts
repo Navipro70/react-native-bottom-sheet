@@ -4,7 +4,7 @@ import type { BottomSheetModalPrivateMethods } from '../bottomSheetModal';
 export interface BottomSheetModalRef {
   key: string;
   ref: {
-    current: BottomSheetModalPrivateMethods;
+    current: BottomSheetModalPrivateMethods | null;
   };
   willUnmount: boolean;
 }

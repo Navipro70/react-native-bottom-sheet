@@ -31,7 +31,11 @@ const BottomSheetModalProviderWrapper = ({
 
   //#region private methods
   const handleMountSheet = useCallback(
-    (key: string, ref: any, stackBehavior: BottomSheetModalStackBehavior) => {
+    (
+      key: string,
+      ref: BottomSheetModalRef['ref'],
+      stackBehavior: BottomSheetModalStackBehavior
+    ) => {
       const _sheetsQueue = sheetsQueueRef.current.slice();
       const sheetIndex = _sheetsQueue.findIndex(item => item.key === key);
       const sheetOnTop = sheetIndex === _sheetsQueue.length - 1;
